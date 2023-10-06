@@ -16,6 +16,6 @@ router.put('/:contactId', isValidId, contactMiddleware.checkUpdateContactData, c
 
 router.patch('/:contactId/favorite', isValidId, contactMiddleware.checkUpdateStatusContact, contactController.updateStatusContact);
 
-router.delete('/:contactId', contactController.deleteContact);
+router.delete('/:contactId', isValidId, contactController.deleteContact);
 
 module.exports = router
