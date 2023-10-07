@@ -18,7 +18,7 @@ const contactExists = await Contact.exists({ name: value.name });
 });
 
 exports.checkUpdateContactData = (req, res, next) => {
-const { error, value } = contactValidators.createContactDataValidator(req.body);
+const { error, value } = contactValidators.updateContactDataValidator(req.body);
     const emptyBody = !Object.keys(req.body).length;
     
     if (emptyBody) {
