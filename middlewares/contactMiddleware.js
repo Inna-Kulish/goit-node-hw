@@ -18,7 +18,7 @@ const contactExists = await Contact.exists({ name: value.name });
 });
 
 exports.checkUpdateContactData = (req, res, next) => {
-const { error, value } = contactValidators.updateContactDataValidator(req.body);
+const { error } = contactValidators.updateContactDataValidator(req.body);
     const emptyBody = !Object.keys(req.body).length;
     
     if (emptyBody) {
@@ -28,16 +28,16 @@ const { error, value } = contactValidators.updateContactDataValidator(req.body);
     if (error) {
       throw HttpError(400, error.message);
     }
-  req.body = value;
+
   next();
 }
 
 exports.checkUpdateStatusContact = (req, res, next) => {
-  const { error, value } = contactValidators.updateFavoriteSchema(req.body);
+  const { error } = contactValidators.updateFavoriteSchema(req.body);
 
   if (error) {
     throw HttpError(400, 'Missing field favorite');
   }
-  req.body = value;
+
   next();
 }

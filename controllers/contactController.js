@@ -2,7 +2,8 @@ const { catchAsync, HttpError } = require("../helpers");
 const Contact = require("../models/contactModel");
 
 exports.getListContacts = catchAsync(async (req, res, next) => {
-  const result = await Contact.find();
+  const { _id: owner } = req.user;
+  const result = await Contact.find({owner}).populate("owner", "email");
 
   res.json(result);
 });
@@ -18,7 +19,8 @@ exports.getContactById = catchAsync(async (req, res) => {
 });
 
 exports.createContact = catchAsync(async (req, res, next) => {
-  const result = await Contact.create(req.body);
+  const { _id: owner } = req.user;
+  const result = await Contact.create(...req.body, owner);
 
   res.status(201).json(result);
 });
@@ -35,7 +37,7 @@ exports.updateContact = catchAsync(async (req, res, next) => {
 
 exports.updateStatusContact = catchAsync(async (req, res, next) => {
   const { contactId } = req.params;
-  console.log(contactId);
+  
   const result = await Contact.findByIdAndUpdate(contactId, req.body, { new: true });
   
   if (!result) {
