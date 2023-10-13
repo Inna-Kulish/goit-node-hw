@@ -5,7 +5,7 @@ exports.checkRegisterUserData = catchAsync(async (req, res, next) => {
   const { error } = userValidators.registerSchema(req.body);
     
   if (error) {
-    throw new HttpError(400, 'Invalid user data..');
+    throw HttpError(400, error.message);
   }
     
     const { email } = req.body;
@@ -18,21 +18,21 @@ exports.checkRegisterUserData = catchAsync(async (req, res, next) => {
   next();
 });
 
-exports.checkLoginUserData = async (req, res, next) => {
+exports.checkLoginUserData = catchAsync(async (req, res, next) => {
     const { error } = userValidators.loginSchema(req.body);
 
     if (error) {
-    throw new HttpError(400, 'Invalid user data..');
+    throw HttpError(400, error.message);
     }
     
   next();
-}
+})
 
 exports.checkUpdateSubscription = (req, res, next) => {
   const { error } = userValidators.updateSubscription(req.body);
 
   if (error) {
-    throw HttpError(400, 'Missing field subscription');
+    throw HttpError(400, error.message);
   }
 
   next();

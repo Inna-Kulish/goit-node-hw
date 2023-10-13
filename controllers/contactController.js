@@ -19,8 +19,9 @@ exports.getContactById = catchAsync(async (req, res) => {
 });
 
 exports.createContact = catchAsync(async (req, res, next) => {
+  console.log(req.user)
   const { _id: owner } = req.user;
-  const result = await Contact.create(...req.body, owner);
+  const result = await Contact.create({...req.body, owner});
 
   res.status(201).json(result);
 });
