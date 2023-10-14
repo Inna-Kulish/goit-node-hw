@@ -4,7 +4,7 @@ const Contact = require("../models/contactModel");
 exports.getListContacts = catchAsync(async (req, res, next) => {
   const { _id: owner } = req.user;
   const result = await Contact.find({owner}).populate("owner", "email");
-
+  console.log(req.user);
   res.json(result);
 });
 
@@ -19,7 +19,6 @@ exports.getContactById = catchAsync(async (req, res) => {
 });
 
 exports.createContact = catchAsync(async (req, res, next) => {
-  console.log(req.user)
   const { _id: owner } = req.user;
   const result = await Contact.create({...req.body, owner});
 
