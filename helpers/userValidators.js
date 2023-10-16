@@ -28,3 +28,11 @@ exports.updateSubscription = (data) =>
       subscription: Joi.string().valid(...Object.values(userSubscription)).required().messages({"any.required": `missing subscription field`}),
     })
     .validate(data);
+
+exports.updateAvatar = (data) =>
+  Joi.object()
+    .options({ abortEarly: false })
+    .keys({
+      avatarURL: Joi.string().required().messages({"any.required": `missing subscription field`}),
+    })
+    .validate(data);

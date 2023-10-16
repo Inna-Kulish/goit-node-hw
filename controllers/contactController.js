@@ -1,10 +1,11 @@
 const { catchAsync, HttpError } = require("../helpers");
 const Contact = require("../models/contactModel");
 
+const contactService = require('../services/contactService');
+
 exports.getListContacts = catchAsync(async (req, res, next) => {
-  const { _id: owner } = req.user;
-  const result = await Contact.find({owner}).populate("owner", "email");
-  console.log(req.user);
+  const result = await contactService.getContacts(req.query, req.user);
+  
   res.json(result);
 });
 

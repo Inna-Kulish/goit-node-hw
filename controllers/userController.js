@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const gravatar = require("gravatar");
 
 const User = require("../models/userModel");
 const userService = require('../services/userService');
@@ -6,11 +7,12 @@ const userService = require('../services/userService');
 const { HttpError, catchAsync } = require("../helpers");
 
 exports.register = catchAsync(async (req, res) => {
-  const { password } = req.body;
+  const { email, password } = req.body;
   
   const hashPassword = await bcrypt.hash(password, 10);
+  const avatarURL = gravatar.url(email);
 
-  const newUser = await User.create({ ...req.body, password: hashPassword });
+  const newUser = await User.create({ ...req.body, password: hashPassword, avatarURL });
 
   res.status(201).json({
     user: {
@@ -58,4 +60,12 @@ exports.updateSubscription = catchAsync(async (req, res) => {
   res.json({
     subscription: result.subscription,
   });
+})
+
+exports.updateAvatar = catchAsync(async (req, res, next) => {
+  const avatarURL = await userService.updateUserAvatar(req.user, req.file);
+  
+  res.json({
+    avatarURL,
+  })
 })
