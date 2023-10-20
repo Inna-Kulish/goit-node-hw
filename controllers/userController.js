@@ -1,18 +1,10 @@
-const bcrypt = require("bcrypt");
-const gravatar = require("gravatar");
-
 const User = require("../models/userModel");
 const userService = require('../services/userService');
 
 const { HttpError, catchAsync } = require("../helpers");
 
 exports.register = catchAsync(async (req, res) => {
-  const { email, password } = req.body;
-  
-  const hashPassword = await bcrypt.hash(password, 10);
-  const avatarURL = gravatar.url(email);
-
-  const newUser = await User.create({ ...req.body, password: hashPassword, avatarURL });
+  const { newUser } = await userService.registerUser(req.body);
 
   res.status(201).json({
     user: {
@@ -20,6 +12,22 @@ exports.register = catchAsync(async (req, res) => {
     subscription: newUser.subscription,}
   });
 });
+
+exports.verifyEmail = catchAsync(async (req, res) => {
+  await userService.verifyUser(req.params)
+
+  res.json({
+    message: "Verification successful",
+  })
+})
+
+exports.resendVerifyEmail = catchAsync(async (req, res) => {
+  await userService.resendEmail(req.body);
+
+  res.json({
+    message: "Verification email sent"
+  })
+})
 
 exports.login = catchAsync(async (req, res) => {
   const { user, token } = await userService.loginUser(req.body);

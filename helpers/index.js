@@ -3,6 +3,7 @@ const contactValidators = require('./contactValidators');
 const handleMongooseError = require('./handleMongooseError');
 const catchAsync = require('./catchAsync');
 const userValidators = require('./userValidators');
+const sendEmail = require('./sendEmail');
 
 module.exports = {
     HttpError,
@@ -10,4 +11,5 @@ module.exports = {
     handleMongooseError,
     catchAsync,
     userValidators,
+    sendEmail,
 }

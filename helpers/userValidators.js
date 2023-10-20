@@ -9,6 +9,15 @@ exports.registerSchema = (data) =>
       email: Joi.string().email().required().messages({"any.required": `missing required field`}),
       password: Joi.string().min(6).required().messages({"any.required": `missing required field`}),
       subscription: Joi.string().valid(...Object.values(userSubscription)),
+      verificationToken: Joi.string(),
+    })
+    .validate(data);
+
+exports.emailSchema = (data) =>
+  Joi.object()
+    .options({ abortEarly: false })
+    .keys({
+      email: Joi.string().email().required().messages({ "any.required": `missing required field email` }),
     })
     .validate(data);
 
